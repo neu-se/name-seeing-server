@@ -1,26 +1,31 @@
 import { z } from 'zod';
 
 /*
-TASK 1: Give three cURL commands that make HTTP requests to the URL
-https://robsimmons-nameseeingserver.web.val.run
+TASK 1: Give five cURL commands that make HTTP requests to the URL
+https://name-seeing-server.onrender.com
 
- - A GET request that returns 200
- - A POST request that returns 200
- - A request that returns status 500 (Internal server error)
+ - A GET request that returns the 200 status
+ - A POST request that returns the 400 status
+ - A POST request that returns the 200 status
+ - A POST request that returns the data { "error": "Incorrect key", correctPrefix: 4 }
+ - A request that returns status 500 (Internal server error) by causing a JavaScript exception
 
 The code for that website is at
-https://www.val.town/v/robsimmons/nameSeeingServer
+https://github.com/neu-se/name-seeing-server/blob/main/server.ts
 
 */
 
-/* TASK 2: What is the correct Zod type for verifying input to the POST route? */
+/* TASK 2: What is the correct Zod type for verifying input to the POST route?
+ * The Zod type should ensure that the server will respond 403 *or* 200, but not 400 or 500,
+ * and should ensure that the `namesPreviouslySeen` set will only ever contain strings.
+ */
 const zPostBody = z.any();
 
-/* TASK 3: Give a Zod type describing the *response* to GET / requests */
+/* TASK 3: Give a Zod type describing the possible *responses* to GET / requests */
 const zGetResponse = z.any();
 
-/* TASK 4: Give a Zod type describing the *response* to POST / requests when the status is 200 */
+/* TASK 4: Give a Zod type describing the possible *responses* to POST / requests when the status is 200 */
 const zPostResponse = z.any();
 
-/* TASK 5: Give a Zod type describing the *response* to POST / requests when the status is 400 or 403 */
+/* TASK 5: Give a Zod type describing the possible *responses* to POST / requests when the status is 400 or 403 */
 const zPostErrorResponse = z.any();

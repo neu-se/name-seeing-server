@@ -14,7 +14,7 @@ app.get('/', (_req, res) => {
 const zPostBody = z.any();
 app.post('/', (req, res) => {
   const body = zPostBody.safeParse(req.body);
-  if (!body.success) {
+  if (!body.success || !body.data.key) {
     res.status(400).send({ error: 'Poorly-formed request' });
     return;
   }
