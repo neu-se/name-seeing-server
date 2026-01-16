@@ -18,14 +18,14 @@ app.get('/', (_req, res) => {
 const zPostBody = z.any();
 app.post('/', (req, res) => {
   const body = zPostBody.safeParse(req.body);
-  if (!body.success) {
+  if (!body.success || body.data.key === undefined) {
     res.status(400).send({ error: 'Poorly-formed request' });
     return;
   }
 
   console.log({ seen: namesPreviouslySeen, body: body.data });
   for (let i = 0; i < SECRET_KEY.length; i += 1) {
-    if (body.data.key[i] !== SECRET_KEY[i]) {
+    if (body.data.key[i][0] !== SECRET_KEY[i]) {
       res.status(403).send({ error: 'Incorrect key', correctPrefix: i });
       return;
     }
