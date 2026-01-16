@@ -1,7 +1,3 @@
-/* eslint "@typescript-eslint/no-unsafe-assignment": "off" */
-/* eslint "@typescript-eslint/no-unsafe-argument": "off" */
-/* eslint "@typescript-eslint/no-unsafe-member-access": "off" */
-
 import express from 'express';
 import { z } from 'zod';
 
