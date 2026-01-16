@@ -12,6 +12,7 @@ export default defineConfig([
     '**/coverage',
     '**/vite.config.mjs',
     'eslint.config.mjs',
+    '**/playwright-report/',
   ]),
   {
     files: ['**/*.{js,mjs,cjs,ts,jsx,tsx}'],
@@ -31,7 +32,11 @@ export default defineConfig([
       'import/no-extraneous-dependencies': [
         'error',
         {
-          devDependencies: ['eslint.config.mjs', '**/*.spec.ts', '**/tests/*.ts'],
+          devDependencies: [
+            '**/*.config.mjs',
+            '**/*.{spec,test}.{ts,tsx}',
+            '**/tests/**/*.{ts,tsx}',
+          ],
           includeInternal: true,
         },
       ],
@@ -42,7 +47,7 @@ export default defineConfig([
       'no-param-reassign': 'error',
       'no-plusplus': 'error',
       'no-throw-literal': 'error',
-      'no-unused-vars': 'warn',
+      'no-unused-vars': ['error', { args: 'none', caughtErrors: 'none' }],
     },
   },
   {
@@ -70,7 +75,7 @@ export default defineConfig([
           selector: 'variable',
           format: ['PascalCase'],
           filter: {
-            regex: 'Model$',
+            regex: 'Repo$',
             match: true,
           },
         },
@@ -87,6 +92,10 @@ export default defineConfig([
           leadingUnderscore: 'require',
         },
       ],
+      '@typescript-eslint/no-unused-vars': [
+        'error',
+        { args: 'none', varsIgnorePattern: '^_', caughtErrors: 'none' },
+      ],
       '@typescript-eslint/no-misused-promises': [
         'error',
         {
@@ -97,15 +106,11 @@ export default defineConfig([
         },
       ],
       '@typescript-eslint/restrict-template-expressions': 'off',
-      // These settings are disabled for this example
-      '@typescript-eslint/no-unsafe-assignment': 'off',
-      '@typescript-eslint/no-unsafe-argument': 'off',
-      '@typescript-eslint/no-unsafe-member-access': 'off',
-      '@typescript-eslint/no-unused-vars': 'off',
+      '@typescript-eslint/no-unsafe-member-access': ['error', { allowOptionalChaining: true }],
     },
   },
   {
-    files: ['client/**/*.{ts,tsx}'],
+    files: ['{client,frontend}/**/*.{ts,tsx}'],
     rules: {
       '@typescript-eslint/naming-convention': [
         'error',
@@ -151,6 +156,13 @@ export default defineConfig([
           leadingUnderscore: 'require',
         },
       ],
+    },
+  },
+  {
+    files: ['{client,frontend}/src/**/*.{ts,tsx}'],
+    rules: {
+      // It is difficult to totally avoid floating promises in certain React contexts.
+      // It may be worth removing this exception and explicitly marking such promises with 'void'.
       '@typescript-eslint/no-floating-promises': 'off',
     },
   },
@@ -160,7 +172,6 @@ export default defineConfig([
       '@typescript-eslint/no-unsafe-assignment': 'off',
       '@typescript-eslint/no-unsafe-member-access': 'off',
       '@typescript-eslint/unbound-method': 'off',
-      'import/no-extraneous-dependencies': 'off',
     },
   },
   {

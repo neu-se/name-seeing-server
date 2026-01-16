@@ -1,3 +1,7 @@
+/* eslint "@typescript-eslint/no-unsafe-assignment": "off" */
+/* eslint "@typescript-eslint/no-unsafe-argument": "off" */
+/* eslint "@typescript-eslint/no-unsafe-member-access": "off" */
+
 import express from 'express';
 import { z } from 'zod';
 
@@ -6,7 +10,7 @@ const namesPreviouslySeen = new Set<string>();
 let mostRecentName: string | null = null;
 
 const app = express();
-app.use(express.json());
+app.use(express.json({ strict: false }));
 app.get('/', (_req, res) => {
   res.send({ namesPreviouslySeen: namesPreviouslySeen.size, mostRecentName });
 });
@@ -14,7 +18,7 @@ app.get('/', (_req, res) => {
 const zPostBody = z.any();
 app.post('/', (req, res) => {
   const body = zPostBody.safeParse(req.body);
-  if (!body.success || !body.data.key) {
+  if (!body.success) {
     res.status(400).send({ error: 'Poorly-formed request' });
     return;
   }
