@@ -21,7 +21,7 @@ app.post('/', (req, res) => {
 
   console.log({ seen: namesPreviouslySeen, body: body.data });
   for (let i = 0; i < SECRET_KEY.length; i += 1) {
-    if (body.data.key[i][0] !== SECRET_KEY[i]) {
+    if (body.data.key.length <= i || body.data.key[i][0] !== SECRET_KEY[i]) {
       res.status(403).send({ error: 'Incorrect key', correctPrefix: i });
       return;
     }
